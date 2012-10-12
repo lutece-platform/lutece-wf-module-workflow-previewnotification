@@ -1,0 +1,15 @@
+<#if list_id_task!?exists && list_id_task!?has_content>
+	<#list list_id_task as id_task>
+		<#assign title = "task_title_" + id_task! />
+		<#assign message = "task_message_" + id_task! />
+		<fieldset>
+			<legend>#i18n{module.workflow.previewnotification.task_preview_notification_title} : ${task[title]!}</legend>
+			<p>
+		    	<div>
+				     ${task[message]!}
+				</div>
+				<br/>	
+			</p>
+		</fieldset>
+	</#list>
+</#if>

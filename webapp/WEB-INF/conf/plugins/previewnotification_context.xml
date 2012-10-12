@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<!-- Transaction Manager -->
+	
+	<!-- DAO -->
+	
+	<!-- Task -->
+	<bean id="workflow-previewnotification.taskTypePreviewNotification" class="fr.paris.lutece.plugins.workflowcore.business.task.TaskType"
+ 		p:key="taskPreviewNotification"
+ 		p:titleI18nKey="module.workflow.previewnotification.task_preview_notification_title"
+ 		p:beanName="workflow-previewnotification.taskPreviewNotification"
+ 		p:configRequired="false"
+ 		p:taskForAutomaticAction="false" />
+	<bean id="workflow-previewnotification.taskPreviewNotification" class="fr.paris.lutece.plugins.workflow.modules.previewnotification.service.TaskPreviewNotification" scope="prototype" />
+	<bean id="workflow-previewnotification.previewNotificationTaskComponent" class="fr.paris.lutece.plugins.workflow.modules.previewnotification.web.PreviewNotificationTaskComponent" 
+	   		p:taskType-ref="workflow-previewnotification.taskTypePreviewNotification" />
+   			
+   	<!-- Service -->
+	<bean id="workflow-previewnotification.previewNotificationService" class="fr.paris.lutece.plugins.workflow.modules.previewnotification.service.PreviewNotificationService" />
+   	
+</beans>
+ 	
