@@ -42,13 +42,14 @@ import javax.servlet.http.HttpServletRequest;
 
 
 /**
- * 
+ *
  * TaskPreviewNotification
- * 
+ *
  */
 public class TaskPreviewNotification extends SimpleTask
 {
     private static String TITLE_TASK_PREVIEW = "module.workflow.previewnotification.task_preview_notification_title";
+
     /**
      * {@inheritDoc}
      */

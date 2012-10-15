@@ -39,9 +39,9 @@ import fr.paris.lutece.portal.service.plugin.PluginService;
 
 
 /**
- * 
+ *
  * PreviewNotificationPlugin
- * 
+ *
  */
 public class PreviewNotificationPlugin extends PluginDefaultImplementation
 {

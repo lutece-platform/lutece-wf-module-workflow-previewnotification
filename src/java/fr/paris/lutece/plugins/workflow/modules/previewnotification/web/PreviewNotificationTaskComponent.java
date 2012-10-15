@@ -49,13 +49,14 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.inject.Inject;
+
 import javax.servlet.http.HttpServletRequest;
 
 
 /**
- * 
+ *
  * PreviewNotificationTaskComponent
- * 
+ *
  */
 public class PreviewNotificationTaskComponent extends TaskComponent
 {
@@ -80,24 +81,24 @@ public class PreviewNotificationTaskComponent extends TaskComponent
 
     @Override
     public String getDisplayTaskForm( int nIdResource, String strResourceType, HttpServletRequest request,
-            Locale locale, ITask task )
+        Locale locale, ITask task )
     {
-        Map<String, Object> model = new HashMap<String, Object>( );
+        Map<String, Object> model = new HashMap<String, Object>(  );
 
         String strListAcceptedTaskTypeKey = AppPropertiesService.getProperty( PROPERTIE_ACCEPTED_TASK_TYPE_KEY );
 
         String[] listAcceptedTaskTypeKey = strListAcceptedTaskTypeKey.split( SEPARATOR );
-        List<Integer> listTaskId = new ArrayList<Integer>( );
-        Map<String, String> taskInfo = new HashMap<String, String>( );
+        List<Integer> listTaskId = new ArrayList<Integer>(  );
+        Map<String, String> taskInfo = new HashMap<String, String>(  );
 
         // Fill the model with the info of other tasks
-        for ( ITask otherTask : this._previewNotificationService.getListTasks( task.getAction( ).getId( ), locale ) )
+        for ( ITask otherTask : this._previewNotificationService.getListTasks( task.getAction(  ).getId(  ), locale ) )
         {
             boolean autorizedType = false;
 
             for ( String acceptedTaskTypeKey : listAcceptedTaskTypeKey )
             {
-                if ( otherTask.getTaskType( ).getKey( ).equals( acceptedTaskTypeKey ) )
+                if ( otherTask.getTaskType(  ).getKey(  ).equals( acceptedTaskTypeKey ) )
                 {
                     autorizedType = true;
                 }
@@ -105,11 +106,12 @@ public class PreviewNotificationTaskComponent extends TaskComponent
 
             if ( autorizedType )
             {
-                taskInfo.put( MARK_TASK_MESSAGE + otherTask.getId( ),
-                        TaskInfoManager.getTaskResourceInfo( nIdResource, otherTask.getId( ), request ) );
-                taskInfo.put( MARK_TASK_TITLE + otherTask.getId( ), otherTask.getTaskType( ).getTitle( ) );
-                listTaskId.add( otherTask.getId( ) );
+                taskInfo.put( MARK_TASK_MESSAGE + otherTask.getId(  ),
+                    TaskInfoManager.getTaskResourceInfo( nIdResource, otherTask.getId(  ), request ) );
+                taskInfo.put( MARK_TASK_TITLE + otherTask.getId(  ), otherTask.getTaskType(  ).getTitle(  ) );
+                listTaskId.add( otherTask.getId(  ) );
             }
+
             autorizedType = false;
         }
 
@@ -118,7 +120,7 @@ public class PreviewNotificationTaskComponent extends TaskComponent
 
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_TASK_FORM, locale, model );
 
-        return template.getHtml( );
+        return template.getHtml(  );
     }
 
     @Override
@@ -141,7 +143,7 @@ public class PreviewNotificationTaskComponent extends TaskComponent
 
     @Override
     public String doValidateTask( int nIdResource, String strResourceType, HttpServletRequest request, Locale locale,
-            ITask task )
+        ITask task )
     {
         return null;
     }

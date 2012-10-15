@@ -52,5 +52,4 @@ public interface IPreviewNotificationService
      * @return a list of {@link ITask}
      */
     List<ITask> getListTasks( int nIdAction, Locale locale );
-
 }

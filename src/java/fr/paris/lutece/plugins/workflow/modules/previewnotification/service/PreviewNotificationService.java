@@ -46,9 +46,9 @@ import javax.inject.Inject;
 
 
 /**
- * 
+ *
  * PreviewNotificationService
- * 
+ *
  */
 public final class PreviewNotificationService implements IPreviewNotificationService
 {
@@ -64,7 +64,6 @@ public final class PreviewNotificationService implements IPreviewNotificationSer
      */
     private PreviewNotificationService(  )
     {
-
     }
 
     /**
