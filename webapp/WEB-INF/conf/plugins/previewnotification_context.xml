@@ -20,7 +20,8 @@
  		p:titleI18nKey="module.workflow.previewnotification.task_preview_notification_title"
  		p:beanName="workflow-previewnotification.taskPreviewNotification"
  		p:configRequired="false"
- 		p:taskForAutomaticAction="false" />
+ 		p:taskForAutomaticAction="false"
+ 		p:formTaskRequired="true" />
 	<bean id="workflow-previewnotification.taskPreviewNotification" class="fr.paris.lutece.plugins.workflow.modules.previewnotification.service.TaskPreviewNotification" scope="prototype" />
 	<bean id="workflow-previewnotification.previewNotificationTaskComponent" class="fr.paris.lutece.plugins.workflow.modules.previewnotification.web.PreviewNotificationTaskComponent" 
 	   		p:taskType-ref="workflow-previewnotification.taskTypePreviewNotification" />
