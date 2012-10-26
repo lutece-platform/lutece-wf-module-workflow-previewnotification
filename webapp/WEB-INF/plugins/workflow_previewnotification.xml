@@ -2,7 +2,7 @@
     <!-- Plugin Informations -->
     <name>workflow-previewnotification</name>
     <class>fr.paris.lutece.plugins.workflow.modules.previewnotification.service.PreviewNotificationPlugin</class>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <documentation/>
     <installation/>
     <changes/>
