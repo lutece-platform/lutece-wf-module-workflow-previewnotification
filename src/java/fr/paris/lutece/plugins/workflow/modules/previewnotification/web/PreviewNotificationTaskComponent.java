@@ -35,7 +35,11 @@ package fr.paris.lutece.plugins.workflow.modules.previewnotification.web;
 
 import fr.paris.lutece.plugins.workflow.modules.previewnotification.service.IPreviewNotificationService;
 import fr.paris.lutece.plugins.workflow.service.taskinfo.TaskInfoManager;
+import fr.paris.lutece.plugins.workflowcore.business.action.Action;
 import fr.paris.lutece.plugins.workflowcore.business.config.ITaskConfig;
+import fr.paris.lutece.plugins.workflowcore.business.resource.ResourceHistory;
+import fr.paris.lutece.plugins.workflowcore.service.action.IActionService;
+import fr.paris.lutece.plugins.workflowcore.service.resource.IResourceHistoryService;
 import fr.paris.lutece.plugins.workflowcore.service.task.ITask;
 import fr.paris.lutece.plugins.workflowcore.web.task.TaskComponent;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
@@ -49,7 +53,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.inject.Inject;
-
 import javax.servlet.http.HttpServletRequest;
 
 
@@ -78,6 +81,10 @@ public class PreviewNotificationTaskComponent extends TaskComponent
     // SERVICES
     @Inject
     private IPreviewNotificationService _previewNotificationService;
+    @Inject
+    private IResourceHistoryService _resourceHistoryService;
+    @Inject
+    private IActionService _actionService;
 
     @Override
     public String getDisplayTaskForm( int nIdResource, String strResourceType, HttpServletRequest request,
@@ -90,6 +97,7 @@ public class PreviewNotificationTaskComponent extends TaskComponent
         String[] listAcceptedTaskTypeKey = strListAcceptedTaskTypeKey.split( SEPARATOR );
         List<Integer> listTaskId = new ArrayList<Integer>(  );
         Map<String, String> taskInfo = new HashMap<String, String>(  );
+        Action action = _actionService.findByPrimaryKey( task.getAction( ).getId( ) );
 
         // Fill the model with the info of other tasks
         for ( ITask otherTask : this._previewNotificationService.getListTasks( task.getAction(  ).getId(  ), locale ) )
@@ -106,8 +114,10 @@ public class PreviewNotificationTaskComponent extends TaskComponent
 
             if ( autorizedType )
             {
+                ResourceHistory nIdHistory = _resourceHistoryService.getLastHistoryResource( nIdResource,
+                        strResourceType, action.getWorkflow( ).getId( ) );
                 taskInfo.put( MARK_TASK_MESSAGE + otherTask.getId(  ),
-                    TaskInfoManager.getTaskResourceInfo( nIdResource, otherTask.getId(  ), request ) );
+                        TaskInfoManager.getTaskResourceInfo( nIdHistory.getId( ), otherTask.getId( ), request ) );
                 taskInfo.put( MARK_TASK_TITLE + otherTask.getId(  ), otherTask.getTaskType(  ).getTitle(  ) );
                 listTaskId.add( otherTask.getId(  ) );
             }
