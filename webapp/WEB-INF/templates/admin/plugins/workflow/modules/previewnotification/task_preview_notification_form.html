@@ -4,12 +4,7 @@
 		<#assign message = "task_message_" + id_task! />
 		<fieldset>
 			<legend>#i18n{module.workflow.previewnotification.task_preview_notification_title} : ${task[title]!}</legend>
-			<p>
-		    	<div>
-				     ${task[message]!}
-				</div>
-				<br/>	
-			</p>
+			${task[message]!}
 		</fieldset>
 	</#list>
 </#if>
