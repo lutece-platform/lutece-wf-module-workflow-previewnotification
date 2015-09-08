@@ -10,7 +10,7 @@
     <groupId>fr.paris.lutece.plugins</groupId>
     <artifactId>module-workflow-previewnotification</artifactId>
     <packaging>lutece-plugin</packaging>
-    <version>2.0.1</version>
+    <version>2.0.2-SNAPSHOT</version>
     <name>Workflow preview notification module</name>
 
     <repositories>
@@ -41,7 +41,7 @@
         <connection>scm:git:https://github.com/lutece-platform/lutece-wf-module-workflow-previewnotification.git</connection>
         <developerConnection>scm:git:https://github.com/lutece-platform/lutece-wf-module-workflow-previewnotification.git</developerConnection>
         <url>https://github.com/lutece-platform/lutece-wf-module-workflow-previewnotification.git</url>
-      <tag>lutece-wf-module-workflow-previewnotification-2.0.1</tag>
+      <tag>HEAD</tag>
   </scm>
     
 </project>
