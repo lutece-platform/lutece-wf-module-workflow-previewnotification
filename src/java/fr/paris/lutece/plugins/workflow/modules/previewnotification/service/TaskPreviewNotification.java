@@ -38,7 +38,8 @@ import fr.paris.lutece.portal.service.i18n.I18nService;
 
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Named;
 
 
 /**
@@ -46,19 +47,16 @@ import javax.servlet.http.HttpServletRequest;
  * TaskPreviewNotification
  *
  */
+@Dependent
+@Named( TaskPreviewNotification.BEAN_TASK )
 public class TaskPreviewNotification extends SimpleTask
 {
-    private static String TITLE_TASK_PREVIEW = "module.workflow.previewnotification.task_preview_notification_title";
+    public static final String BEAN_TASK = "workflow-previewnotification.taskPreviewNotification";
+    private static final String TITLE_TASK_PREVIEW = "module.workflow.previewnotification.task_preview_notification_title";
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    public void processTask( int nIdResourceHistory, HttpServletRequest request, Locale locale )
-    {
-        // nothing to do
-    }
-
     @Override
     public String getTitle( Locale locale )
     {

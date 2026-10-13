@@ -1,10 +1,9 @@
-<#if list_id_task!?exists && list_id_task!?has_content>
+<#if list_id_task?has_content>
 	<#list list_id_task as id_task>
-		<#assign title = "task_title_" + id_task! />
-		<#assign message = "task_message_" + id_task! />
-		<fieldset>
-			<legend>#i18n{module.workflow.previewnotification.task_preview_notification_title} : ${task[title]!}</legend>
-			${task[message]!}
-		</fieldset>
+		<@fieldSet legend='#i18n{module.workflow.previewnotification.task_preview_notification_title} : ${task["task_title_" + id_task]!}'>
+			${task["task_message_" + id_task]!}
+		</@fieldSet>
 	</#list>
+<#else>
+	<@alert color='info'>#i18n{module.workflow.previewnotification.task_preview_notification_empty}</@alert>
 </#if>

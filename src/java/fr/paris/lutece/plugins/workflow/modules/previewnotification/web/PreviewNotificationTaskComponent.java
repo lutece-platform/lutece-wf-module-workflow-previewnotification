@@ -34,10 +34,12 @@
 package fr.paris.lutece.plugins.workflow.modules.previewnotification.web;
 
 import fr.paris.lutece.plugins.workflow.modules.previewnotification.service.IPreviewNotificationService;
+import fr.paris.lutece.plugins.workflow.modules.previewnotification.service.TaskTypePreviewNotificationProducer;
 import fr.paris.lutece.plugins.workflow.service.taskinfo.TaskInfoManager;
 import fr.paris.lutece.plugins.workflowcore.business.action.Action;
 import fr.paris.lutece.plugins.workflowcore.business.config.ITaskConfig;
 import fr.paris.lutece.plugins.workflowcore.business.resource.ResourceHistory;
+import fr.paris.lutece.plugins.workflowcore.business.task.ITaskType;
 import fr.paris.lutece.plugins.workflowcore.service.action.IActionService;
 import fr.paris.lutece.plugins.workflowcore.service.resource.IResourceHistoryService;
 import fr.paris.lutece.plugins.workflowcore.service.task.ITask;
@@ -52,8 +54,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 /**
@@ -61,6 +65,8 @@ import javax.servlet.http.HttpServletRequest;
  * PreviewNotificationTaskComponent
  *
  */
+@ApplicationScoped
+@Named( "workflow-previewnotification.previewNotificationTaskComponent" )
 public class PreviewNotificationTaskComponent extends TaskComponent
 {
     private static final String SEPARATOR = ";";
@@ -86,20 +92,36 @@ public class PreviewNotificationTaskComponent extends TaskComponent
     @Inject
     private IActionService _actionService;
 
+    /**
+     * Creates the component bound to the preview notification task type.
+     *
+     * @param taskType
+     *            the preview notification task type
+     */
+    @Inject
+    public PreviewNotificationTaskComponent( @Named( TaskTypePreviewNotificationProducer.BEAN_TASK_TYPE ) ITaskType taskType )
+    {
+        setTaskType( taskType );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDisplayTaskForm( int nIdResource, String strResourceType, HttpServletRequest request,
         Locale locale, ITask task )
     {
         Map<String, Object> model = new HashMap<String, Object>(  );
 
-        String strListAcceptedTaskTypeKey = AppPropertiesService.getProperty( PROPERTIE_ACCEPTED_TASK_TYPE_KEY );
+        String strListAcceptedTaskTypeKey = AppPropertiesService.getProperty( PROPERTIE_ACCEPTED_TASK_TYPE_KEY, "" );
 
         String[] listAcceptedTaskTypeKey = strListAcceptedTaskTypeKey.split( SEPARATOR );
         List<Integer> listTaskId = new ArrayList<Integer>(  );
         Map<String, String> taskInfo = new HashMap<String, String>(  );
         Action action = _actionService.findByPrimaryKey( task.getAction( ).getId( ) );
+        ResourceHistory resourceHistory = _resourceHistoryService.getLastHistoryResource( nIdResource, strResourceType,
+                action.getWorkflow( ).getId( ) );
 
-        // Fill the model with the info of other tasks
         for ( ITask otherTask : this._previewNotificationService.getListTasks( task.getAction(  ).getId(  ), locale ) )
         {
             boolean autorizedType = false;
@@ -112,12 +134,10 @@ public class PreviewNotificationTaskComponent extends TaskComponent
                 }
             }
 
-            if ( autorizedType )
+            if ( autorizedType && ( resourceHistory != null ) )
             {
-                ResourceHistory nIdHistory = _resourceHistoryService.getLastHistoryResource( nIdResource,
-                        strResourceType, action.getWorkflow( ).getId( ) );
                 taskInfo.put( MARK_TASK_MESSAGE + otherTask.getId(  ),
-                        TaskInfoManager.getTaskResourceInfo( nIdHistory.getId( ), otherTask.getId( ), request ) );
+                        TaskInfoManager.getTaskResourceInfo( resourceHistory.getId( ), otherTask.getId( ), request ) );
                 taskInfo.put( MARK_TASK_TITLE + otherTask.getId(  ), otherTask.getTaskType(  ).getTitle(  ) );
                 listTaskId.add( otherTask.getId(  ) );
             }
@@ -133,24 +153,27 @@ public class PreviewNotificationTaskComponent extends TaskComponent
         return template.getHtml(  );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDisplayConfigForm( HttpServletRequest request, Locale locale, ITask task )
     {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDisplayTaskInformation( int nIdHistory, HttpServletRequest request, Locale locale, ITask task )
     {
         return null;
     }
 
-    @Override
-    public String getTaskInformationXml( int nIdHistory, HttpServletRequest request, Locale locale, ITask task )
-    {
-        return null;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String doValidateTask( int nIdResource, String strResourceType, HttpServletRequest request, Locale locale,
         ITask task )
@@ -158,6 +181,9 @@ public class PreviewNotificationTaskComponent extends TaskComponent
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String validateConfig( ITaskConfig config, HttpServletRequest request )
     {

@@ -46,7 +46,6 @@ import fr.paris.lutece.portal.service.plugin.PluginService;
 public class PreviewNotificationPlugin extends PluginDefaultImplementation
 {
     public static final String PLUGIN_NAME = "workflow-previewnotification";
-    public static final String BEAN_TRANSACTION_MANAGER = PLUGIN_NAME + ".transactionManager";
 
     /**
      * Get the plugin
