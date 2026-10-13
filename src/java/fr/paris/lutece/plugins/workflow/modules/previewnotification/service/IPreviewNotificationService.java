@@ -40,8 +40,7 @@ import java.util.Locale;
 
 
 /**
- *
- *
+ * Lists the tasks of an action whose information a task info provider gives.
  */
 public interface IPreviewNotificationService
 {

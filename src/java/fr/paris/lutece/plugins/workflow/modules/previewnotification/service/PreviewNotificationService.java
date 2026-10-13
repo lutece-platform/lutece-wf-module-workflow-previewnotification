@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.workflow.modules.previewnotification.service;
 
-import fr.paris.lutece.plugins.workflow.service.taskinfo.ITaskInfoProvider;
 import fr.paris.lutece.plugins.workflow.service.taskinfo.TaskInfoManager;
 import fr.paris.lutece.plugins.workflowcore.service.task.ITask;
 import fr.paris.lutece.plugins.workflowcore.service.task.ITaskService;
@@ -42,7 +41,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 
 /**
@@ -50,7 +51,9 @@ import javax.inject.Inject;
  * PreviewNotificationService
  *
  */
-public final class PreviewNotificationService implements IPreviewNotificationService
+@ApplicationScoped
+@Named( PreviewNotificationService.BEAN_SERVICE )
+public class PreviewNotificationService implements IPreviewNotificationService
 {
     /** The Constant BEAN_SERVICE. */
     public static final String BEAN_SERVICE = "workflow-previewnotification.previewNotificationService";
@@ -58,13 +61,6 @@ public final class PreviewNotificationService implements IPreviewNotificationSer
     // SERVICES
     @Inject
     private ITaskService _taskService;
-
-    /**
-     * Private constructor
-     */
-    private PreviewNotificationService(  )
-    {
-    }
 
     /**
      * {@inheritDoc}
@@ -76,14 +72,9 @@ public final class PreviewNotificationService implements IPreviewNotificationSer
 
         for ( ITask task : _taskService.getListTaskByIdAction( nIdAction, locale ) )
         {
-            for ( ITaskInfoProvider provider : TaskInfoManager.getProvidersList(  ) )
+            if ( TaskInfoManager.getProvider( task.getTaskType( ).getKey( ) ) != null )
             {
-                if ( task.getTaskType(  ).getKey(  ).equals( provider.getTaskType(  ).getKey(  ) ) )
-                {
-                    listTasks.add( task );
-
-                    break;
-                }
+                listTasks.add( task );
             }
         }
 
